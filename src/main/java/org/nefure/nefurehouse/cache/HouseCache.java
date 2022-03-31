@@ -193,4 +193,7 @@ public class HouseCache {
         }
     }
 
+    public int getMissCount(Integer driveId) {
+        return getCacheByDriveId(driveId).getMissCount();
+    }
 }

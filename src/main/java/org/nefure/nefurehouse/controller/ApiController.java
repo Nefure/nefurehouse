@@ -7,21 +7,17 @@ import org.nefure.nefurehouse.model.dto.*;
 import org.nefure.nefurehouse.model.entity.DriverConfig;
 import org.nefure.nefurehouse.model.entity.ShortLinkConfig;
 import org.nefure.nefurehouse.model.dto.SystemConfigDTO;
-import org.nefure.nefurehouse.model.enums.StorageType;
 import org.nefure.nefurehouse.model.support.ResultData;
 import org.nefure.nefurehouse.model.support.VerifyResult;
 import org.nefure.nefurehouse.service.*;
 import org.nefure.nefurehouse.service.base.AbstractBaseFileService;
 import org.nefure.nefurehouse.util.FileComparator;
-import org.nefure.nefurehouse.util.HttpUtil;
 import org.nefure.nefurehouse.util.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * 通用功能接口，包括获取启用的驱动、驱动下文件表、转短链接
@@ -75,18 +71,18 @@ public class ApiController {
                                        @RequestParam(required = false) String orderBy) throws Exception {
         AbstractBaseFileService fileService = driverContext.get(driveId);
         List<FileItemDTO> items = fileService.fileList(StringUtils.removeDuplicateSeparator(HouseConstant.PATH_SEPARATOR + path + HouseConstant.PATH_SEPARATOR));
-        ArrayList<FileItemDTO> itemCopy = new ArrayList<>(items);
 
-        VerifyResult result = fileService.verifyPassword(driverContext,itemCopy, driveId, path, password);
+        VerifyResult result = fileService.verifyPassword(items, path, password);
         if(!result.isPassed()){
             return ResultData.error(result.getMsg(),result.getCode());
         }
 
-        // 按照自然排序
-        itemCopy.sort(new FileComparator(orderBy, orderDirection));
-
         //过滤表达式要隐藏的的信息
-        fileService.filterFileList(itemCopy,driveId,filterConfigService);
+        String readme = fileService.getReadme(items);
+        fileService.filterFileList(items,driveId,filterConfigService);
+
+        // 按照自然排序
+        items.sort(new FileComparator(orderBy, orderDirection));
 
         //获取参数信息
         SystemFrontConfigDTO systemConfig = new SystemFrontConfigDTO(systemConfigService.getSystemConfig());
@@ -101,17 +97,8 @@ public class ApiController {
         systemConfig.setDefaultSwitchToImgMode(driverConfig.getDefaultSwitchToImgMode());
         systemConfig.setDirectLinkPrefix(HouseConstant.DIRECT_LINK_PREFIX);
 
-        // 如果不是 FTP 模式，则尝试获取当前文件夹中的 README 文件，有则读取，没有则停止
-        if (!Objects.equals(driverConfig.getType(), StorageType.FTP)) {
-            for (FileItemDTO item : items) {
-                if(Objects.equals(item.getName(),HouseConstant.FILE_NAME_README)){
-                    String readme = HttpUtil.getTextContent(item.getUrl());
-                    systemConfig.setReadme(readme);
-                    break;
-                }
-            }
-        }
-        return ResultData.successData(new FileListDTO(itemCopy,systemConfig));
+        systemConfig.setReadme(readme);
+        return ResultData.successData(new FileListDTO(items,systemConfig));
     }
 
     /**

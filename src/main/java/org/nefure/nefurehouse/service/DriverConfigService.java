@@ -5,13 +5,12 @@ import org.nefure.nefurehouse.cache.HouseCache;
 import org.nefure.nefurehouse.context.DriveContext;
 import org.nefure.nefurehouse.exception.InvalidDriveException;
 import org.nefure.nefurehouse.mapper.DriverConfigMapper;
-import org.nefure.nefurehouse.mapper.FilterConfigMapper;
 import org.nefure.nefurehouse.model.dto.DriverConfigDTO;
 import org.nefure.nefurehouse.model.dto.StorageStrategyConfig;
 import org.nefure.nefurehouse.model.entity.DriverConfig;
-import org.nefure.nefurehouse.model.entity.FilterConfig;
 import org.nefure.nefurehouse.model.entity.StorageConfig;
 import org.nefure.nefurehouse.model.enums.StorageType;
+import org.nefure.nefurehouse.model.dto.CacheInfoDTO;
 import org.nefure.nefurehouse.service.base.AbstractBaseFileService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -20,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author nefure
@@ -149,5 +149,20 @@ public class DriverConfigService {
         for (DriverConfig driverConfig : driverConfigList){
             driverConfigDao.updateDriveOrderNumber(driverConfig.getId(),driverConfig.getOrderNum());
         }
+    }
+
+    public void updateDriveCacheStatus(Integer driveId, boolean enable) {
+        DriverConfig driverConfig = getDriverConfigById(driveId);
+        if(driverConfig != null){
+            driverConfig.setEnableCache(enable);
+            updateDriveConfig(driverConfig);
+        }
+    }
+
+    public CacheInfoDTO getCacheInfo(Integer driveId) {
+        int hitCount = houseCache.getHitCount(driveId);
+        int missCount = houseCache.getMissCount(driveId);
+        Set<String> keySet = houseCache.keySet(driveId);
+        return new CacheInfoDTO(hitCount,missCount, keySet.size(), keySet);
     }
 }

@@ -46,6 +46,7 @@ public abstract class AbstractBaseFileService implements BaseFileService {
      *
      * @param path 根目录
      * @return 根目录文件
+     * @exception Exception 文件获取异常
      */
     @Override
     public abstract List<FileItemDTO> fileList(String path) throws Exception;
@@ -87,7 +88,7 @@ public abstract class AbstractBaseFileService implements BaseFileService {
      */
     public abstract List<StorageConfig> storageStrategyConfigList();
 
-    public void filterFileList(ArrayList<FileItemDTO> items, Integer driveId, FilterConfigService filterConfigService) {
+    public void filterFileList(List<FileItemDTO> items, Integer driveId, FilterConfigService filterConfigService) {
         if (items == null) {
             return;
         }
@@ -100,14 +101,11 @@ public abstract class AbstractBaseFileService implements BaseFileService {
      * 校验密码
      *
      * @param fileItemList  文件列表
-     * @param driveId       驱动器 ID
      * @param path          请求路径
      * @param inputPassword 用户输入的密码
      * @return 是否校验通过
      */
-    public VerifyResult verifyPassword(DriveContext driveContext, List<FileItemDTO> fileItemList, Integer driveId, String path, String inputPassword) {
-        AbstractBaseFileService fileService = driveContext.get(driveId);
-
+    public VerifyResult verifyPassword(List<FileItemDTO> fileItemList, String path, String inputPassword) {
         for (FileItemDTO fileItemDTO : fileItemList) {
             if (HouseConstant.FILE_NAME_PASSWORD.equals(fileItemDTO.getName())) {
                 String expectedPasswordContent;
@@ -118,7 +116,7 @@ public abstract class AbstractBaseFileService implements BaseFileService {
                             driveId, path, inputPassword, JSON.toJSONString(fileItemDTO), httpClientErrorException);
                     try {
                         String pwdFileFullPath = StringUtils.removeDuplicateSeparator(fileItemDTO.getPath() + HouseConstant.PATH_SEPARATOR + fileItemDTO.getName());
-                        FileItemDTO pwdFileItem = fileService.getFileItem(pwdFileFullPath);
+                        FileItemDTO pwdFileItem = getFileItem(pwdFileFullPath);
                         expectedPasswordContent = HttpUtil.getTextContent(pwdFileItem.getUrl());
                     } catch (Exception e) {
                         throw new PasswordVerifyException("此文件夹为加密文件夹, 但密码检查异常, 请联系管理员检查密码设置", e);
@@ -204,5 +202,16 @@ public abstract class AbstractBaseFileService implements BaseFileService {
 
     public void setDriveId(Integer driveId) {
         this.driveId = driveId;
+    }
+
+    public String getReadme(List<FileItemDTO> items){
+        if (!Objects.equals(getType(), StorageType.FTP)) {
+            for (FileItemDTO item : items) {
+                if(Objects.equals(item.getName(),HouseConstant.FILE_NAME_README)){
+                    return HttpUtil.getTextContent(item.getUrl());
+                }
+            }
+        }
+        return null;
     }
 }

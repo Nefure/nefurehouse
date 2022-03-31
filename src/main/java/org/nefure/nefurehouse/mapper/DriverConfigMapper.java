@@ -24,6 +24,7 @@ public interface DriverConfigMapper {
      * 根据是否启用来查询驱动配置信息
      * @param enable 是否只查已启用的
      * @param asc 是否为正序，为null不进行排序
+     * @param orderBy 排序字段
      * @return 查询结果
      */
     @Select({"<script>", "select * from", TABLE_NAME, "where enable=#{enable}", ORDER, "</script>"})
@@ -39,7 +40,9 @@ public interface DriverConfigMapper {
 
     /**
      * 获取所有配置，可选是否排序
-     * @return
+     * @param orderBy 排序字段
+     * @param asc 是否升序
+     * @return 匹配项
      */
     @Select({"<script>", "select * from",TABLE_NAME,ORDER, "</script>"})
     List<DriverConfig> findAll(String orderBy, Boolean asc);
@@ -55,9 +58,13 @@ public interface DriverConfigMapper {
      * 更新数据
      * @param driverConfig 新数据
      */
-    @Insert("update "+TABLE_NAME+" set enable=#{driverConfig.enable},name=#{driverConfig.name},enable_cache=#{driverConfig.enableCache},auto_refresh_cache=#{driverConfig.autoRefreshCache},type=#{driverConfig.type},search_enable=#{driverConfig.searchEnable},search_ignore_case=#{driverConfig.searchIgnoreCase},search_contain_encrypted_file=#{driverConfig.searchContainEncryptedFile},order_num=#{driverConfig.orderNum},default_switch_to_img_mode=#{driverConfig.defaultSwitchToImgMode})")
+    @Insert("update "+TABLE_NAME+" set enable=#{enable},name=#{name},enable_cache=#{enableCache},auto_refresh_cache=#{autoRefreshCache},type=#{type},search_enable=#{searchEnable},search_ignore_case=#{searchIgnoreCase},search_contain_encrypted_file=#{searchContainEncryptedFile},order_num=#{orderNum},default_switch_to_img_mode=#{defaultSwitchToImgMode} where id=#{id}")
     void update(DriverConfig driverConfig);
 
+    /**
+     * 删除驱动
+     * @param driveId 要删除的驱动的id
+     */
     @Delete("delete from "+TABLE_NAME+" where id=#{driveId}")
     void delete(Integer driveId);
 
