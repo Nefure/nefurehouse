@@ -1,0 +1,18 @@
+{
+  "siteName": "",
+  "storageStrategy": "",
+  "username": "",
+  "password": "",
+  "domain": "http://localhost:8081/",
+  "customCss": "",
+  "customJs": "",
+  "tableSize": "mini",
+  "showOperator": "true",
+  "showDocument": "true",
+  "announcement": "网站公告",
+  "showAnnouncement": "true",
+  "layout": "full",
+  "showLinkBtn": "true",
+  "showShortLink": "true",
+  "showPathLink": "true"
+}

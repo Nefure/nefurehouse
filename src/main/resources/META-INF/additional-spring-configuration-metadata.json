@@ -1,0 +1,102 @@
+{
+    "properties": [
+        {
+            "name": "nefurehouse.cache.timeout",
+            "type": "java.lang.Long",
+            "description": "目录缓存过期时间 和 下载地址过期时间. 单位为秒."
+        },
+        {
+            "name": "nefurehouse.cache.auto-refresh.interval",
+            "type": "java.lang.Long",
+            "description": "任务间隔时间, 每隔多长时间检测一次到期的缓存 KEY 并自动刷新, 单位为秒."
+        },
+        {
+            "name": "nefurehouse.constant.readme",
+            "type": "java.lang.String",
+            "defaultValue": "readme.md",
+            "description": "文档文件 文件名."
+        },
+        {
+            "name": "nefurehouse.constant.password",
+            "type": "java.lang.String",
+            "defaultValue": "password.txt",
+            "description": "密码文件 文件名."
+        },
+        {
+            "name": "nefurehouse.onedrive.clientId",
+            "type": "java.lang.String",
+            "description": "OneDrive ClientId."
+        },
+        {
+            "name": "nefurehouse.onedrive.clientSecret",
+            "type": "java.lang.String",
+            "description": "OneDrive ClientSecret."
+        },
+        {
+            "name": "nefurehouse.onedrive.redirectUri",
+            "type": "java.lang.String",
+            "description": "OneDrive 认证重定向地址."
+        },
+        {
+            "name": "nefurehouse.onedrive.scope",
+            "type": "java.lang.String",
+            "description": "OneDrive 认证权限."
+        },
+        {
+            "name": "nefurehouse.onedrive-china.clientId",
+            "type": "java.lang.String",
+            "description": "OneDrive China ClientId."
+        },
+        {
+            "name": "nefurehouse.onedrive-china.clientSecret",
+            "type": "java.lang.String",
+            "description": "OneDrive China ClientSecret."
+        },
+        {
+            "name": "nefurehouse.onedrive-china.redirectUri",
+            "type": "java.lang.String",
+            "description": "OneDrive China 认证重定向地址."
+        },
+        {
+            "name": "nefurehouse.onedrive-china.scope",
+            "type": "java.lang.String",
+            "description": "OneDrive China 认证权限."
+        },
+        {
+            "name": "nefurehouse.preview.audio.maxFileSizeMb",
+            "type": "java.lang.Long",
+            "description": "允许在线解析封面, 专辑, 歌手信息的音频文件大小, 单位为 KB."
+        },
+        {
+            "name": "nefurehouse.preview.text.maxFileSizeKb",
+            "type": "java.lang.Long",
+            "description": "允许在线读取文本文件的文件大小, 单位为 KB."
+        },
+        {
+            "name": "nefurehouse.log.path",
+            "type": "java.lang.String",
+            "description": "日志文件路径."
+        },
+        {
+            "name": "nefurehouse.db.path",
+            "type": "java.lang.String",
+            "description": "数据库文件路径."
+        },
+        {
+            "name": "nefurehouse.tmp.path",
+            "type": "java.lang.String",
+            "description": "临时文件路径."
+        },
+        {
+            "name": "nefurehouse.debug",
+            "type": "java.lang.Boolean",
+            "description": "是否开启 debug 模式."
+        },
+        {
+            "name": "nefurehouse.directLinkPrefix",
+            "type": "java.lang.String",
+            "defaultValue": "directlink",
+            "description": "直链前缀名称, 默认为 directlink."
+        }
+    ]
+}

@@ -1,0 +1,64 @@
+nefurehouse:
+  debug: false
+  directLinkPrefix: directlink
+  log:
+    path: logs
+  tmp:
+    path: tmp
+  house: e:\\.nefurehouse
+  cache:
+    auto-refresh:
+      interval: 1
+    timeout: 1800
+  constant:
+    readme: readme.md
+    password: password.txt
+  preview:
+    audio:
+      maxFileSizeMb: 5
+    text:
+      maxFileSizeKb: 512
+  onedrive:
+    clientId: 09939809-c617-43c8-a220-a93c1513c5d4
+    clientSecret: _l:zI-_yrW75lV8M61K@z.I2K@B/On6Q
+    redirectUri: https://zfile.jun6.net/onedrive/callback
+    scope: offline_access User.Read Files.ReadWrite.All
+  onedrive-china:
+    clientId: 4a72d927-1907-488d-9eb2-1b465c53c1c5
+    clientSecret: Y9CEA=82da5n-y_]KAWAgLH3?R9xf7Uw
+    redirectUri: https://zfile.jun6.net/onedrive/china-callback
+    scope: offline_access User.Read Files.ReadWrite.All
+  json:
+    systemConfig: json/systemConfig.json
+
+server:
+  port: 8080
+  servlet:
+    context-path: ''
+  tomcat:
+    threads:
+      max: 20
+  compression:
+    enabled: true
+
+spring:
+  datasource:
+    #MySQL 配置
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/house?characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowMultiQueries=true
+    username: nefure
+    password: misaki
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm
+    time-zone: GMT+8
+
+  profiles:
+    active: prod
+
+
+mybatis:
+  #别名包（方便在映射文件中直接写类名）
+  type-aliases-package: org.nefure.nefurehouse.model.entity
+  configuration:
+    map-underscore-to-camel-case: true
