@@ -42,7 +42,6 @@ public class GlobalExceptionHandler {
     @ResponseStatus
     public ResultData extraExceptionHandler(Exception e) {
         log.error(e.getMessage(), e);
-
         return ResultData.error("系统异常, 请联系管理员");
     }
 }

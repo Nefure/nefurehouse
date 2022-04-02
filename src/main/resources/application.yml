@@ -2,10 +2,10 @@ nefurehouse:
   debug: false
   directLinkPrefix: directlink
   log:
-    path: logs
+    path: e:/.nefurehouse/logs
   tmp:
-    path: tmp
-  house: e:\\.nefurehouse
+    path: e:/.nefurehouse/tmp
+  house: e:/.nefurehouse
   cache:
     auto-refresh:
       interval: 1
@@ -18,16 +18,6 @@ nefurehouse:
       maxFileSizeMb: 5
     text:
       maxFileSizeKb: 512
-  onedrive:
-    clientId: 09939809-c617-43c8-a220-a93c1513c5d4
-    clientSecret: _l:zI-_yrW75lV8M61K@z.I2K@B/On6Q
-    redirectUri: https://zfile.jun6.net/onedrive/callback
-    scope: offline_access User.Read Files.ReadWrite.All
-  onedrive-china:
-    clientId: 4a72d927-1907-488d-9eb2-1b465c53c1c5
-    clientSecret: Y9CEA=82da5n-y_]KAWAgLH3?R9xf7Uw
-    redirectUri: https://zfile.jun6.net/onedrive/china-callback
-    scope: offline_access User.Read Files.ReadWrite.All
   json:
     systemConfig: json/systemConfig.json
 

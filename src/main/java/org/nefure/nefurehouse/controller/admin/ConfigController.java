@@ -50,8 +50,7 @@ public class ConfigController {
 
     @GetMapping("/log")
     public ResponseEntity<?> logDownload(){
-        String tmpLogPath = HouseConstant.HOUSE+HouseConstant.PATH_SEPARATOR+HouseConstant.TMP_FILE_PATH;
-        tmpLogPath = StringUtils.removeDuplicateSeparator(tmpLogPath);
+        String tmpLogPath = HouseConstant.TMP_FILE_PATH;
         File zip = ZipUtil.zip(tmpLogPath);
         String curTime = DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss");
         return FileUtil.exportSingleThread(zip, "ZFile 诊断日志 - " + curTime + ".zip");

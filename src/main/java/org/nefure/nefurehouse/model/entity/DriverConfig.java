@@ -1,8 +1,12 @@
 package org.nefure.nefurehouse.model.entity;
 
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 import org.nefure.nefurehouse.model.enums.StorageType;
+import org.nefure.nefurehouse.model.enums.StorageTypeEnumJsonDeSerializerConvert;
+import org.nefure.nefurehouse.model.enums.StorageTypeEnumJsonSerializerConvert;
 
 /**
  * @author nefure
@@ -21,6 +25,7 @@ public class DriverConfig {
 
     private Boolean autoRefreshCache;
 
+    @JsonDeserialize(using = StorageTypeEnumJsonDeSerializerConvert.class)
     private StorageType type;
 
     private Boolean searchEnable;
@@ -33,7 +38,6 @@ public class DriverConfig {
 
     private Boolean defaultSwitchToImgMode;
 
-    public void setType(String key){
-        type = StorageType.getEnum(key);
-    }
+    public DriverConfig(){}
+
 }

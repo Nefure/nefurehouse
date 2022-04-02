@@ -1,9 +1,11 @@
 package org.nefure.nefurehouse.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 import lombok.ToString;
 import org.nefure.nefurehouse.model.enums.StorageType;
+import org.nefure.nefurehouse.model.enums.StorageTypeEnumJsonSerializerConvert;
 
 /**
  * @author nefure
@@ -20,6 +22,7 @@ public class SystemConfigDTO {
 
     private String username;
 
+    @JsonSerialize(using = StorageTypeEnumJsonSerializerConvert.class)
     private StorageType storageStrategy;
 
     @JsonIgnore
@@ -49,7 +52,4 @@ public class SystemConfigDTO {
 
     private Boolean showPathLink;
 
-    public void setStorageStrategy(String storageStrategy) {
-        this.storageStrategy = StorageType.getEnum(storageStrategy);
-    }
 }

@@ -37,4 +37,27 @@ public class CacheController {
         return ResultData.successData(cacheInfoDTO);
     }
 
+    @PostMapping("/{driveId}/refresh")
+    public ResultData refreshCache(@PathVariable Integer driveId, String key) throws Exception {
+        driverConfigService.refreshCache(driveId,key);
+        return ResultData.success();
+    }
+
+    @PostMapping("/{driveId}/auto-refresh/start")
+    public ResultData startAutoRefresh(@PathVariable Integer driveId){
+        driverConfigService.updateAutoRefreshStatus(driveId,true);
+        return ResultData.success();
+    }
+
+    @PostMapping("/{driveId}/auto-refresh/stop")
+    public ResultData stopAutoRefresh(@PathVariable Integer driveId){
+        driverConfigService.updateAutoRefreshStatus(driveId,false);
+        return ResultData.success();
+    }
+
+    @PostMapping("/{driveId}/clear")
+    public ResultData clearCache(@PathVariable Integer driveId){
+        driverConfigService.clearCache(driveId);
+        return ResultData.success();
+    }
 }

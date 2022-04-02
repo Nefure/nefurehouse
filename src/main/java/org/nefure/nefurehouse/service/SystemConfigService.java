@@ -182,4 +182,7 @@ public class SystemConfigService {
         systemConfigMapper.update(username,password);
     }
 
+    public String getDomain() {
+        return getSystemConfig().getDomain();
+    }
 }

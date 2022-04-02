@@ -88,21 +88,19 @@ public class DriverConfigService {
 
         DriverConfigDTO driverConfigDTO = new DriverConfigDTO();
         BeanUtils.copyProperties(driverConfig,driverConfigDTO);
+        driverConfigDTO.setType(driverConfig.getType());
         driverConfigDTO.setStorageStrategyConfig(storageStrategyConfig);
 
         return driverConfigDTO;
-    }
-
-    public void updateDriveConfigDTO(DriverConfigDTO driverConfigDTO) {
-
     }
 
     @Transactional(rollbackFor = Exception.class)
     public void saveDriveConfigDTO(DriverConfigDTO driverConfigDTO) {
         Integer driveId = driverConfigDTO.getId();
         DriverConfig driverConfig = new DriverConfig();
-        StorageStrategyConfig storageStrategyConfig = driverConfigDTO.getStorageStrategyConfig();
         BeanUtils.copyProperties(driverConfigDTO,driverConfig);
+        driverConfig.setType(driverConfigDTO.getType());
+        StorageStrategyConfig storageStrategyConfig = driverConfigDTO.getStorageStrategyConfig();
 
         Class<StorageStrategyConfig> sClass = StorageStrategyConfig.class;
         StorageType type = driverConfigDTO.getType() == null ? StorageType.LOCAL : driverConfigDTO.getType();
@@ -135,6 +133,7 @@ public class DriverConfigService {
             }
         }
         storageConfigService.insert(storageConfigs);
+        driveContext.init(driverConfigDTO.getId());
     }
 
     private void insertDriverConfig(DriverConfig driverConfig) {
@@ -159,10 +158,44 @@ public class DriverConfigService {
         }
     }
 
+    /**
+     * 获取某个驱动的缓存信息
+     */
     public CacheInfoDTO getCacheInfo(Integer driveId) {
         int hitCount = houseCache.getHitCount(driveId);
         int missCount = houseCache.getMissCount(driveId);
         Set<String> keySet = houseCache.keySet(driveId);
         return new CacheInfoDTO(hitCount,missCount, keySet.size(), keySet);
+    }
+
+    /**
+     * 手动刷新缓存
+     */
+    public void refreshCache(Integer driveId, String key) throws Exception {
+        if (log.isDebugEnabled()) {
+            log.debug("手动刷新缓存 driveId: {}, key: {}", driveId, key);
+        }
+        houseCache.remove(driveId,key);
+        AbstractBaseFileService fileService = driveContext.get(driveId);
+        fileService.fileList(key);
+    }
+
+    /**
+     * 开启驱动的缓存自动刷新
+     */
+    public void updateAutoRefreshStatus(Integer driveId, boolean isStart) {
+        DriverConfig driverConfig = driverConfigDao.findById(driveId);
+        driverConfig.setAutoRefreshCache(isStart);
+        driverConfigDao.update(driverConfig);
+        if(isStart) {
+            houseCache.startAutoCacheRefresh(driveId);
+        }
+        else {
+            houseCache.stopAutoCacheRefresh(driveId);
+        }
+    }
+
+    public void clearCache(Integer driveId) {
+        houseCache.clear(driveId);
     }
 }

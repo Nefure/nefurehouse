@@ -15,6 +15,9 @@ import org.nefure.nefurehouse.model.support.VerifyResult;
 import org.nefure.nefurehouse.service.FilterConfigService;
 import org.nefure.nefurehouse.util.HttpUtil;
 import org.nefure.nefurehouse.util.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.*;
@@ -24,17 +27,19 @@ import java.util.stream.Collectors;
  * @author nefure
  * @date 2022/3/17 21:05
  */
-@Slf4j
 public abstract class AbstractBaseFileService implements BaseFileService {
 
     protected Integer driveId;
 
     protected boolean isInitialized;
 
+    protected Logger log = LoggerFactory.getLogger(AbstractBaseFileService.class);
+
     /**
      * 下载链接过期时间
      */
-    long timeOut;
+    @Value("${nefurehouse.cache.timeout}")
+    long timeout;
 
     /**
      * 基路径
@@ -46,7 +51,7 @@ public abstract class AbstractBaseFileService implements BaseFileService {
      *
      * @param path 根目录
      * @return 根目录文件
-     * @exception Exception 文件获取异常
+     * @throws Exception 文件获取异常
      */
     @Override
     public abstract List<FileItemDTO> fileList(String path) throws Exception;
@@ -204,12 +209,10 @@ public abstract class AbstractBaseFileService implements BaseFileService {
         this.driveId = driveId;
     }
 
-    public String getReadme(List<FileItemDTO> items){
-        if (!Objects.equals(getType(), StorageType.FTP)) {
-            for (FileItemDTO item : items) {
-                if(Objects.equals(item.getName(),HouseConstant.FILE_NAME_README)){
-                    return HttpUtil.getTextContent(item.getUrl());
-                }
+    public String getReadme(List<FileItemDTO> items) {
+        for (FileItemDTO item : items) {
+            if (Objects.equals(item.getName(), HouseConstant.FILE_NAME_README)) {
+                return HttpUtil.getTextContent(item.getUrl());
             }
         }
         return null;

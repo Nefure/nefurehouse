@@ -7,8 +7,6 @@ public class StorageConfigConstant {
 
     public static final String BUCKET_NAME_KEY = "bucketName";
 
-    public static final String SECRET_ID_KEY = "secretId";
-
     public static final String ACCESS_KEY = "accessKey";
 
     public static final String SECRET_KEY = "secretKey";

@@ -32,6 +32,9 @@ public class SupportController {
     @GetMapping("/strategy-form")
     public ResultData getForm(StorageType storageType){
         AbstractBaseFileService storageService = driveContext.getBeanByStorageType(storageType);
+        if (storageService == null) {
+            return ResultData.error("暂不支持此类存储哦");
+        }
         List<StorageConfig> storageConfigs = storageService.storageStrategyConfigList();
         return ResultData.successData(storageConfigs);
     }

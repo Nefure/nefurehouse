@@ -18,26 +18,16 @@ public enum StorageType {
     LOCAL("local", "本地存储"),
     ALIYUN("aliyun", "阿里云 OSS"),
     TENCENT("tencent", "腾讯云 COS"),
-    UPYUN("upyun", "又拍云 USS"),
-    FTP("ftp", "FTP"),
-    UFILE("ufile", "UFile"),
-    HUAWEI("huawei", "华为云 OBS"),
-    MINIO("minio", "MINIO"),
-    S3("s3", "S3通用协议"),
-    ONE_DRIVE("onedrive", "OneDrive"),
-    ONE_DRIVE_CHINA("onedrive-china", "OneDrive 世纪互联"),
-    SHAREPOINT_DRIVE("sharepoint", "SharePoint"),
-    SHAREPOINT_DRIVE_CHINA("sharepoint-china", "SharePoint 世纪互联"),
-    QINIU("qiniu", "七牛云 KODO");
+    HUAWEI("huawei", "华为云 OBS");
 
     private String key;
     private String description;
 
-    private static Map<String,StorageType> map = new HashMap<>();
+    private static final Map<String,StorageType> MAP = new HashMap<>();
 
     static {
         for (StorageType type : StorageType.values()){
-            map.put(type.key,type);
+            MAP.put(type.key,type);
         }
     }
 
@@ -63,7 +53,7 @@ public enum StorageType {
     }
 
     public static StorageType getEnum(String key){
-        return map.get(key.toLowerCase());
+        return MAP.get(key.toLowerCase());
     }
 
 }

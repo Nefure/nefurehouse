@@ -158,6 +158,7 @@
                     <jvms>
                         <jvm>-Djava.security.egd=file:/dev/./urandom</jvm>
                         <jvm>-Dfile.encoding=utf-8</jvm>
+                        <jvm>-Dlog4j2.formatMsgNoLookups=true</jvm>
                     </jvms>
                 </configuration>
             </plugin>

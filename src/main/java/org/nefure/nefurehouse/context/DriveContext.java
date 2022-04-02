@@ -61,7 +61,7 @@ public class DriveContext implements ApplicationContextAware {
         }
     }
 
-    private void init(Integer driveId) {
+    public void init(Integer driveId) {
         AbstractBaseFileService service = getBeanByDriverId(driveId);
         if(service != null){
             if(log.isDebugEnabled()){

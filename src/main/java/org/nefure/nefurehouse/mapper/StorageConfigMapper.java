@@ -28,15 +28,15 @@ public interface StorageConfigMapper {
      * 删除某个驱动相关的存储信息
      * @param driveId 驱动id
      */
-    @Delete("delete from "+TABLE_NAME+" where drive_id=#{driveId]")
+    @Delete("delete from "+TABLE_NAME+" where drive_id=#{driveId}")
     void deleteByDriveId(Integer driveId);
 
     /**
-     *
-     * @param storageConfigs
+     * 批量更新存储配置
+     * @param storageConfigs 新配置项
      */
     @Insert({"<script>",
-            "<foreach collection='list' item='config' open='", "insert", TABLE_NAME, "(`key`,`value`,`title`,`driveId`,`type`) values", "' separator=','>",
+            "<foreach collection='list' item='config' open='", "insert", TABLE_NAME, "(`key`,`value`,`title`,`drive_id`,`type`) values", "' separator=','>",
             "(#{config.key},#{config.value},#{config.title},#{config.driveId},#{config.type})",
             "</foreach>",
             "</script>"})
