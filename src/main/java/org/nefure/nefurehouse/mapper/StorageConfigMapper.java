@@ -21,15 +21,15 @@ public interface StorageConfigMapper {
      * @param driveId 驱动id
      * @return 存储配置
      */
-    @Select({"select * from",TABLE_NAME,"where drive_id=#{driveId}"})
-    List<StorageConfig> findByDriveId(Integer driveId);
+    @Select("select * from "+TABLE_NAME+" where drive_id=#{driveId}")
+    List<StorageConfig> findByDriveId(Long driveId);
 
     /**
      * 删除某个驱动相关的存储信息
      * @param driveId 驱动id
      */
     @Delete("delete from "+TABLE_NAME+" where drive_id=#{driveId}")
-    void deleteByDriveId(Integer driveId);
+    void deleteByDriveId(Long driveId);
 
     /**
      * 批量更新存储配置

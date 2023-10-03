@@ -14,10 +14,11 @@ import java.util.List;
 /**
  * 驱动管理接口
  * @author nefure
- * @date 2022/3/28 21:44
+ * @date 2022/1/28 21:44
  */
 @RestController
 @RequestMapping("/admin")
+@CrossOrigin
 public class DriveController {
 
     @Resource
@@ -38,7 +39,7 @@ public class DriveController {
      * 获取指定驱动信息
      */
     @GetMapping("/drive/{driveId}")
-    public ResultData getDrive(@PathVariable Integer driveId){
+    public ResultData getDrive(@PathVariable Long driveId){
         return ResultData.successData(driverConfigService.getDriverConfigDTOById(driveId));
     }
 
@@ -48,7 +49,7 @@ public class DriveController {
      * 删除指定驱动
      */
     @DeleteMapping("/drive/{driveId}")
-    public ResultData deleteDrive(@PathVariable Integer driveId){
+    public ResultData deleteDrive(@PathVariable Long driveId){
         driverConfigService.delete(driveId);
         return ResultData.success();
     }
@@ -66,7 +67,7 @@ public class DriveController {
      * 启动指定驱动
      */
     @PostMapping("/drive/{driveId}/enable")
-    public ResultData enableDrive(@PathVariable Integer driveId){
+    public ResultData enableDrive(@PathVariable Long driveId){
         DriverConfig driverConfig = driverConfigService.getDriverConfigById(driveId);
         driverConfig.setEnable(true);
         driverConfigService.updateDriveConfig(driverConfig);
@@ -77,7 +78,7 @@ public class DriveController {
      * 停用指定驱动
      */
     @PostMapping("/drive/{driveId}/disable")
-    public ResultData disableDrive(@PathVariable Integer driveId){
+    public ResultData disableDrive(@PathVariable Long driveId){
         DriverConfig driverConfig = driverConfigService.getDriverConfigById(driveId);
         driverConfig.setEnable(false);
         driverConfigService.updateDriveConfig(driverConfig);
@@ -88,7 +89,7 @@ public class DriveController {
      * 获取过滤条件
      */
     @GetMapping("/drive/{driveId}/filters")
-    public ResultData getFilters(@PathVariable Integer driveId){
+    public ResultData getFilters(@PathVariable Long driveId){
         return ResultData.successData(filterConfigService.getFiltersByDriveId(driveId));
     }
 

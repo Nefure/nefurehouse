@@ -20,16 +20,16 @@ public interface FilterConfigMapper {
      * @param driveId 驱动id
      * @return 过滤配置
      */
-    @Select({"select * from",TABLE_NAME,"where driver_id = #{driveId}"})
-    List<FilterConfig> findByDriveId(Integer driveId);
+    @Select({"select * from "+TABLE_NAME+" where driver_id = #{driveId}"})
+    List<FilterConfig> findByDriveId(Long driveId);
 
     /**
      * 删除一个驱动的使用过滤选项
      * @param driveId 驱动id
      */
-    @Delete("delete from "+TABLE_NAME+" where driveId=#{driveId}")
+    @Delete("delete from "+TABLE_NAME+" where driver_id=#{driveId}")
     void deleteByDriveId(Integer driveId);
 
-    @Insert("insert "+TABLE_NAME+"(drive_id,expression) values(#{filterConfig.expression})")
+    @Insert("insert "+TABLE_NAME+"(driver_id,expression) values(#{driveId},#{expression})")
     void save(FilterConfig filterConfig);
 }

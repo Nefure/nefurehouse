@@ -40,7 +40,7 @@ public class LocalController {
      */
     @GetMapping("/file/{driveId}/**")
     @ResponseBody
-    public void downAttachment(@PathVariable("driveId") Integer driveId, String type, final HttpServletRequest request, final HttpServletResponse response) {
+    public void downAttachment(@PathVariable("driveId") Long driveId, String type, final HttpServletRequest request, final HttpServletResponse response) {
         String path = (String) request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
         String bestMatchPattern = (String) request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE);
         AntPathMatcher apm = new AntPathMatcher();

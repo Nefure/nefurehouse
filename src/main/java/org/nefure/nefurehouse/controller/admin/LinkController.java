@@ -12,6 +12,7 @@ import javax.annotation.Resource;
  * @author nefure
  * @date 2022/3/27 19:46
  */
+@CrossOrigin
 @RequestMapping("/admin")
 @RestController
 public class LinkController {

@@ -1,6 +1,7 @@
 package org.nefure.nefurehouse.service.impl;
 
 import cn.hutool.core.util.StrUtil;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.nefure.nefurehouse.exception.InitializeDriveException;
 import org.nefure.nefurehouse.exception.NotExistFileException;
@@ -37,10 +38,11 @@ public class LocalFileService extends AbstractBaseFileService {
     @Resource
     private SystemConfigService systemConfigService;
 
+    @Getter
     private String filePath;
 
     @Override
-    public void init(Integer driveId) {
+    public void init(Long driveId) {
         this.driveId = driveId;
         Map<String, StorageConfig> stringStorageConfigMap = storageConfigService.getStringStorageConfigMap(driveId);
         mergeStrategyConfig(stringStorageConfigMap);
@@ -116,8 +118,6 @@ public class LocalFileService extends AbstractBaseFileService {
     public StorageType getType() {
         return StorageType.LOCAL;
     }
-
-    public String getFilePath(){return filePath;}
 
     public void setFilePath(String filePath) {
         this.filePath = filePath;

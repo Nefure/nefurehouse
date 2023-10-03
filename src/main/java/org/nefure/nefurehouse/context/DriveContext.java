@@ -31,7 +31,7 @@ public class DriveContext implements ApplicationContextAware {
     @Resource
     private DriverConfigService driverConfigService;
 
-    private final Map<Integer,AbstractBaseFileService> serviceMap = new ConcurrentHashMap<>();
+    private final Map<Long,AbstractBaseFileService> serviceMap = new ConcurrentHashMap<>();
 
     private static Map<String, AbstractBaseFileService> fileServiceMap;
 
@@ -40,7 +40,7 @@ public class DriveContext implements ApplicationContextAware {
      * @param driverId 驱动id
      * @return 能够对此驱动处理的service
      */
-    public AbstractBaseFileService get(Integer driverId){
+    public AbstractBaseFileService get(Long driverId){
         AbstractBaseFileService abstractBaseFileService = serviceMap.get(driverId);
         if (abstractBaseFileService == null){
             throw new InvalidDriveException("此驱动器不存在或初始化失败, 请检查后台参数配置");
@@ -61,7 +61,7 @@ public class DriveContext implements ApplicationContextAware {
         }
     }
 
-    public void init(Integer driveId) {
+    public void init(Long driveId) {
         AbstractBaseFileService service = getBeanByDriverId(driveId);
         if(service != null){
             if(log.isDebugEnabled()){
@@ -80,7 +80,7 @@ public class DriveContext implements ApplicationContextAware {
      * @param driveId 驱动id
      * @return 对应的service对象
      */
-    private AbstractBaseFileService getBeanByDriverId(Integer driveId) {
+    private AbstractBaseFileService getBeanByDriverId(Long driveId) {
         DriverConfig driverConfig = driverConfigService.getDriverConfigById(driveId);
         if(driverConfig != null){
             Map<String, AbstractBaseFileService> beansOfType = SpringContextHolder.getBeansOfType(AbstractBaseFileService.class);
@@ -106,7 +106,7 @@ public class DriveContext implements ApplicationContextAware {
     }
 
 
-    public void destory(Integer driveId) {
+    public void destory(Long driveId) {
         serviceMap.remove(driveId);
     }
 }

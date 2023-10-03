@@ -15,7 +15,7 @@ import org.nefure.nefurehouse.model.enums.StorageTypeEnumJsonSerializerConvert;
 @Data
 public class DriverConfig {
 
-    private Integer id;
+    private Long id;
 
     private Boolean enable;
 
@@ -34,7 +34,7 @@ public class DriverConfig {
 
     private Boolean searchContainEncryptedFile;
 
-    private Integer orderNum;
+    private Long orderNum;
 
     private Boolean defaultSwitchToImgMode;
 

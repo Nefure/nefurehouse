@@ -4,3 +4,5 @@
 /.idea/
 /src/test/
 /LOG_HOME_IS_UNDEFINED/
+/.nefurehouse/
+/src/main/resources/static

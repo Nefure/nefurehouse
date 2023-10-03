@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -45,7 +46,7 @@ public class DriverConfigService {
         return driverConfigDao.findByEnabled(true, "order_num",true);
     }
 
-    public DriverConfig getDriverConfigById(Integer driverId) {
+    public DriverConfig getDriverConfigById(Long driverId) {
         DriverConfig config = driverConfigDao.findById(driverId);
         if(config == null){
             throw new InvalidDriveException("此驱动器不存在或初始化失败, 请检查后台参数配置");
@@ -54,7 +55,8 @@ public class DriverConfigService {
     }
 
     public List<DriverConfig> list() {
-        return driverConfigDao.findAll("order_num",true);
+        List<DriverConfig> all = driverConfigDao.findAll("order_num", true);
+        return all;
     }
 
     public void updateDriveConfig(DriverConfig driverConfig) {
@@ -65,7 +67,7 @@ public class DriverConfigService {
      * 级联删除驱动
      */
     @Transactional(rollbackFor = Exception.class)
-    public void delete(Integer driveId) {
+    public void delete(Long driveId) {
         if(log.isDebugEnabled()){
             log.debug("正在尝试删除drive,id：{}",driveId);
         }
@@ -82,7 +84,7 @@ public class DriverConfigService {
         }
     }
 
-    public DriverConfigDTO getDriverConfigDTOById(Integer driveId) {
+    public DriverConfigDTO getDriverConfigDTOById(Long driveId) {
         DriverConfig driverConfig = getDriverConfigById(driveId);
         StorageStrategyConfig storageStrategyConfig = storageConfigService.getStorageStrategyConfigByDriveId(driveId);
 
@@ -96,7 +98,7 @@ public class DriverConfigService {
 
     @Transactional(rollbackFor = Exception.class)
     public void saveDriveConfigDTO(DriverConfigDTO driverConfigDTO) {
-        Integer driveId = driverConfigDTO.getId();
+        Long driveId = driverConfigDTO.getId();
         DriverConfig driverConfig = new DriverConfig();
         BeanUtils.copyProperties(driverConfigDTO,driverConfig);
         driverConfig.setType(driverConfigDTO.getType());
@@ -133,11 +135,13 @@ public class DriverConfigService {
             }
         }
         storageConfigService.insert(storageConfigs);
-        driveContext.init(driverConfigDTO.getId());
+        driveContext.init(driveId);
     }
 
     private void insertDriverConfig(DriverConfig driverConfig) {
         driverConfigDao.save(driverConfig);
+        Long id = driverConfig.getId();
+        driverConfigDao.updateDriveOrderNumber(id,id);
     }
 
     /**
@@ -145,12 +149,13 @@ public class DriverConfigService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void updateDriveOrderNumbers(List<DriverConfig> driverConfigList) {
+        long[] orders = driverConfigList.stream().mapToLong(DriverConfig::getOrderNum).toArray();
         for (DriverConfig driverConfig : driverConfigList){
             driverConfigDao.updateDriveOrderNumber(driverConfig.getId(),driverConfig.getOrderNum());
         }
     }
 
-    public void updateDriveCacheStatus(Integer driveId, boolean enable) {
+    public void updateDriveCacheStatus(Long driveId, boolean enable) {
         DriverConfig driverConfig = getDriverConfigById(driveId);
         if(driverConfig != null){
             driverConfig.setEnableCache(enable);
@@ -161,7 +166,7 @@ public class DriverConfigService {
     /**
      * 获取某个驱动的缓存信息
      */
-    public CacheInfoDTO getCacheInfo(Integer driveId) {
+    public CacheInfoDTO getCacheInfo(Long driveId) {
         int hitCount = houseCache.getHitCount(driveId);
         int missCount = houseCache.getMissCount(driveId);
         Set<String> keySet = houseCache.keySet(driveId);
@@ -171,7 +176,7 @@ public class DriverConfigService {
     /**
      * 手动刷新缓存
      */
-    public void refreshCache(Integer driveId, String key) throws Exception {
+    public void refreshCache(Long driveId, String key) throws Exception {
         if (log.isDebugEnabled()) {
             log.debug("手动刷新缓存 driveId: {}, key: {}", driveId, key);
         }
@@ -183,7 +188,7 @@ public class DriverConfigService {
     /**
      * 开启驱动的缓存自动刷新
      */
-    public void updateAutoRefreshStatus(Integer driveId, boolean isStart) {
+    public void updateAutoRefreshStatus(Long driveId, boolean isStart) {
         DriverConfig driverConfig = driverConfigDao.findById(driveId);
         driverConfig.setAutoRefreshCache(isStart);
         driverConfigDao.update(driverConfig);
@@ -195,7 +200,7 @@ public class DriverConfigService {
         }
     }
 
-    public void clearCache(Integer driveId) {
+    public void clearCache(Long driveId) {
         houseCache.clear(driveId);
     }
 }

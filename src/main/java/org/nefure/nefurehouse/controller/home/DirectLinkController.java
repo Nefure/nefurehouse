@@ -14,6 +14,7 @@ import org.nefure.nefurehouse.service.base.AbstractBaseFileService;
 import org.nefure.nefurehouse.util.HttpUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.AntPathMatcher;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.HandlerMapping;
@@ -29,6 +30,7 @@ import java.util.Objects;
  * @author nefure
  * @date 2022/3/24 16:14
  */
+@CrossOrigin
 @Controller
 public class DirectLinkController {
 
@@ -39,7 +41,7 @@ public class DirectLinkController {
     private DriverConfigService service;
 
     @GetMapping("/${nefurehouse.directLinkPrefix}/{driveId}/**")
-    public String directLink(@PathVariable Integer driveId,
+    public String directLink(@PathVariable Long driveId,
                              HttpServletRequest request,
                              HttpServletResponse response) throws IOException {
         //判断是否可用

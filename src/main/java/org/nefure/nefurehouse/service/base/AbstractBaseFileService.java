@@ -2,8 +2,7 @@ package org.nefure.nefurehouse.service.base;
 
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
-import lombok.extern.slf4j.Slf4j;
-import org.nefure.nefurehouse.context.DriveContext;
+import lombok.Getter;
 import org.nefure.nefurehouse.exception.InitializeDriveException;
 import org.nefure.nefurehouse.exception.PasswordVerifyException;
 import org.nefure.nefurehouse.model.constant.HouseConstant;
@@ -20,7 +19,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.client.HttpClientErrorException;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -29,7 +31,8 @@ import java.util.stream.Collectors;
  */
 public abstract class AbstractBaseFileService implements BaseFileService {
 
-    protected Integer driveId;
+    @Getter
+    protected Long driveId;
 
     protected boolean isInitialized;
 
@@ -61,7 +64,7 @@ public abstract class AbstractBaseFileService implements BaseFileService {
      *
      * @param driveId 驱动id
      */
-    public abstract void init(Integer driveId);
+    public abstract void init(Long driveId);
 
     /**
      * 测试是否连接成功, 会尝试取调用获取根路径的文件, 如果没有抛出异常, 则认为连接成功, 某些存储策略需要复写此方法.
@@ -93,7 +96,7 @@ public abstract class AbstractBaseFileService implements BaseFileService {
      */
     public abstract List<StorageConfig> storageStrategyConfigList();
 
-    public void filterFileList(List<FileItemDTO> items, Integer driveId, FilterConfigService filterConfigService) {
+    public void filterFileList(List<FileItemDTO> items, Long driveId, FilterConfigService filterConfigService) {
         if (items == null) {
             return;
         }
@@ -201,11 +204,7 @@ public abstract class AbstractBaseFileService implements BaseFileService {
         }
     }
 
-    public Integer getDriveId() {
-        return driveId;
-    }
-
-    public void setDriveId(Integer driveId) {
+    public void setDriveId(Long driveId) {
         this.driveId = driveId;
     }
 

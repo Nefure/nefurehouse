@@ -11,7 +11,7 @@ import org.nefure.nefurehouse.service.base.AbstractBaseFileService;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,6 +29,7 @@ public class CacheAspect {
     @Resource
     private DriverConfigService driverConfigService;
 
+    @SuppressWarnings("unchecked")
     @Around("execution(public * org.nefure.nefurehouse.service.base.AbstractBaseFileService.fileList(..))")
     public Object aroundFileList(ProceedingJoinPoint point) throws Throwable {
         //获取要查找的文件路径
@@ -36,12 +37,12 @@ public class CacheAspect {
         String path = String.valueOf(args[0]);
 
         AbstractBaseFileService fileService = (AbstractBaseFileService) point.getTarget();
-        Integer driveId = fileService.getDriveId();
+        Long driveId = fileService.getDriveId();
 
         DriverConfig driverConfig = driverConfigService.getDriverConfigById(driveId);
         //判断开了缓存没
         //没有开缓存就直接跑原方法
-        if(null == driverConfig.getEnable() || !driverConfig.getEnable()){
+        if(null == driverConfig || !driverConfig.getEnable() || !driverConfig.getEnableCache()){
             return point.proceed();
         }
         //开了就直接取缓存里的（缓存没有就跑原方法放进去）
@@ -50,6 +51,7 @@ public class CacheAspect {
             cache = (List<FileItemDTO>) point.proceed();
             houseCache.put(driveId,path,cache);
         }
-        return cache;
+        //返回缓存的副本
+        return new ArrayList<>(cache);
     }
 }

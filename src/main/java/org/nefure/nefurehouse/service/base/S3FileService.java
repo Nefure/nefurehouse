@@ -59,7 +59,7 @@ public abstract class S3FileService extends AbstractBaseFileService {
         String fullPath = StringUtils.removeFirstSeparators(StringUtils.removeDuplicateSeparator(basePath + HouseConstant.PATH_SEPARATOR + path));
 
         // 如果不是私有空间, 且指定了加速域名, 则直接返回下载地址.
-        boolean isNullOrEmpty = domain != null && !"".equals(domain);
+        boolean isNullOrEmpty = domain != null && !domain.isEmpty();
         if (BooleanUtil.isFalse(isPrivate) && !isNullOrEmpty) {
             return StringUtils.concatPath(domain, fullPath);
         }
@@ -144,7 +144,7 @@ public abstract class S3FileService extends AbstractBaseFileService {
     }
 
     @Override
-    public void init(Integer driveId) {
+    public void init(Long driveId) {
         this.driveId = driveId;
         Map<String, StorageConfig> storageConfigMap = getStorageConfigMap();
         String accessKey = storageConfigMap.get(StorageConfigConstant.ACCESS_KEY).getValue();

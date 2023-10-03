@@ -1,6 +1,6 @@
 {
   "siteName": "",
-  "storageStrategy": "",
+  "storageStrategy": "LOCAL",
   "username": "",
   "password": "",
   "domain": "http://localhost:8081/",

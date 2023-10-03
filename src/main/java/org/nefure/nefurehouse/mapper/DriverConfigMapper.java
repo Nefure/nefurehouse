@@ -18,7 +18,7 @@ public interface DriverConfigMapper {
     /**
      * 按情况排序的sql片段
      */
-    String ORDER = "<if test = 'orderBy != null'> order by #{orderBy}<choose><when test = 'asc != false'>asc</when> <otherwise>dec</otherwise></choose></if>";
+    String ORDER = "<if test = 'orderBy != null'> order by `${orderBy}`<choose><when test = 'asc != false'>asc</when> <otherwise>desc</otherwise></choose></if>";
 
     /**
      * 根据是否启用来查询驱动配置信息
@@ -36,7 +36,7 @@ public interface DriverConfigMapper {
      * @return 匹配的驱动配置
      */
     @Select({"select * from",TABLE_NAME,"where id = #{driverId}"})
-    DriverConfig findById(Integer driverId);
+    DriverConfig findById(Long driverId);
 
     /**
      * 获取所有配置，可选是否排序
@@ -58,7 +58,7 @@ public interface DriverConfigMapper {
      * 更新数据
      * @param driverConfig 新数据
      */
-    @Insert("update "+TABLE_NAME+" set enable=#{enable},name=#{name},enable_cache=#{enableCache},auto_refresh_cache=#{autoRefreshCache},type=#{type},search_enable=#{searchEnable},search_ignore_case=#{searchIgnoreCase},search_contain_encrypted_file=#{searchContainEncryptedFile},order_num=#{orderNum},default_switch_to_img_mode=#{defaultSwitchToImgMode} where id=#{id}")
+    @Update("update "+TABLE_NAME+" set enable=#{enable},name=#{name},enable_cache=#{enableCache},auto_refresh_cache=#{autoRefreshCache},type=#{type},search_enable=#{searchEnable},search_ignore_case=#{searchIgnoreCase},search_contain_encrypted_file=#{searchContainEncryptedFile},order_num=#{orderNum},default_switch_to_img_mode=#{defaultSwitchToImgMode} where id=#{id}")
     void update(DriverConfig driverConfig);
 
     /**
@@ -66,7 +66,7 @@ public interface DriverConfigMapper {
      * @param driveId 要删除的驱动的id
      */
     @Delete("delete from "+TABLE_NAME+" where id=#{driveId}")
-    void delete(Integer driveId);
+    void delete(Long driveId);
 
     /**
      * 更新顺序（在service层通过事务批量更新）
@@ -74,5 +74,5 @@ public interface DriverConfigMapper {
      * @param orderNum 要变更为的顺序
      */
     @Update("update "+TABLE_NAME+" set order_num=#{orderNum} where id=#{id}")
-    void updateDriveOrderNumber(Integer id, Integer orderNum);
+    void updateDriveOrderNumber(Long id, Long orderNum);
 }

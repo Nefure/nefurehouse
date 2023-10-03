@@ -34,14 +34,14 @@ public interface ShortLinkMapper {
      * @param url 全路径
      * @return 已配置的短链接
      */
-    @Select({"select * from",TABLE_NAME,"where url = #{url}"})
+    @Select({"select * from "+TABLE_NAME+" where url = #{url}"})
     ShortLinkConfig findByUrl(String url);
 
     /**
      *  添加记录
      * @param shortLinkConfig 插入对象实体
      */
-    @Insert({"insert",TABLE_NAME,"set `key`=#{key},url=#{url}"})
+    @Insert("insert "+TABLE_NAME+" set `key`=#{key},url=#{url}")
     void save(ShortLinkConfig shortLinkConfig);
 
     /**

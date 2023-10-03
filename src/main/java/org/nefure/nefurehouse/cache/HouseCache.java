@@ -46,9 +46,9 @@ public class HouseCache {
      * 每个驱动id对应应该缓存表，
      * 缓存表内，每个路径对应此路径下的文件表
      */
-    private final Map<Integer, TimedClearCache<String, List<FileItemDTO>>> driveCache = new ConcurrentHashMap<>();
+    private final Map<Long, TimedClearCache<String, List<FileItemDTO>>> driveCache = new ConcurrentHashMap<>();
 
-    public TimedClearCache<String, List<FileItemDTO>> getCacheByDriveId(Integer driveId) {
+    public TimedClearCache<String, List<FileItemDTO>> getCacheByDriveId(Long driveId) {
         TimedClearCache<String, List<FileItemDTO>> cache;
         if ((cache = driveCache.get(driveId)) != null) {
             return cache;
@@ -56,7 +56,7 @@ public class HouseCache {
         return initDriveCache(driveId);
     }
 
-    private synchronized TimedClearCache<String, List<FileItemDTO>> initDriveCache(Integer driveId) {
+    private synchronized TimedClearCache<String, List<FileItemDTO>> initDriveCache(Long driveId) {
         TimedClearCache<String, List<FileItemDTO>> cache;
         cache = driveCache.get(driveId);
         if (cache == null) {
@@ -73,7 +73,7 @@ public class HouseCache {
      * @param key     文件夹路径
      * @param value   文件夹中列表
      */
-    public synchronized void put(Integer driveId, String key, List<FileItemDTO> value) {
+    public synchronized void put(Long driveId, String key, List<FileItemDTO> value) {
         getCacheByDriveId(driveId).put(key, value);
     }
 
@@ -89,7 +89,7 @@ public class HouseCache {
      *
      * @return  驱动器中文件夹的内容
      */
-    public List<FileItemDTO> get(Integer driveId, String key) {
+    public List<FileItemDTO> get(Long driveId, String key) {
         return getCacheByDriveId(driveId).get(key, false);
     }
 
@@ -100,7 +100,7 @@ public class HouseCache {
      * @param   driveId
      *          驱动器 ID
      */
-    public void clear(Integer driveId) {
+    public void clear(Long driveId) {
         if (log.isDebugEnabled()) {
             log.debug("清空驱动器所有缓存, driveId: {}", driveId);
         }
@@ -112,7 +112,7 @@ public class HouseCache {
      *
      * @param driveId 要查询的驱动id
      */
-    public int getHitCount(Integer driveId) {
+    public int getHitCount(Long driveId) {
         return getCacheByDriveId(driveId).getHitCount();
     }
 
@@ -121,7 +121,7 @@ public class HouseCache {
      *
      * @return      所有缓存 key
      */
-    public Set<String> keySet(Integer driveId) {
+    public Set<String> keySet(Long driveId) {
         Iterator<CacheObj<String, List<FileItemDTO>>> cacheObjIterator = getCacheByDriveId(driveId).cacheObjIterator();
         Set<String> keys = new HashSet<>();
         while (cacheObjIterator.hasNext()) {
@@ -139,7 +139,7 @@ public class HouseCache {
      * @param   key
      *          文件夹路径
      */
-    public void remove(Integer driveId, String key) {
+    public void remove(Long driveId, String key) {
         getCacheByDriveId(driveId).remove(key);
     }
 
@@ -161,7 +161,7 @@ public class HouseCache {
      * @param   driveId
      *          驱动器 ID
      */
-    public void startAutoCacheRefresh(Integer driveId) {
+    public void startAutoCacheRefresh(Long driveId) {
         if (log.isDebugEnabled()) {
             log.debug("开启缓存自动刷新 driveId: {}", driveId);
         }
@@ -183,7 +183,7 @@ public class HouseCache {
      * @param   driveId
      *          驱动器 ID
      */
-    public void stopAutoCacheRefresh(Integer driveId) {
+    public void stopAutoCacheRefresh(Long driveId) {
         if (log.isDebugEnabled()) {
             log.debug("停止缓存自动刷新 driveId: {}", driveId);
         }
@@ -193,7 +193,7 @@ public class HouseCache {
         }
     }
 
-    public int getMissCount(Integer driveId) {
+    public int getMissCount(Long driveId) {
         return getCacheByDriveId(driveId).getMissCount();
     }
 }

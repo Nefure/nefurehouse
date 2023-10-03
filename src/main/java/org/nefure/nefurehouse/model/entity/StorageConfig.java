@@ -21,7 +21,7 @@ public class StorageConfig {
 
     private String value;
 
-    private Integer driveId;
+    private Long driveId;
 
     public StorageConfig(String key, String title) {
         this.key = key;

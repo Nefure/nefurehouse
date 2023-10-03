@@ -1,5 +1,4 @@
 package org.nefure.nefurehouse.mapper;
-
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -107,4 +106,5 @@ public interface SystemConfigMapper {
             "</foreach>",
             "</script>"})
     int update(SystemConfig... systemConfigs);
+
 }

@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class HouseConstant {
 
+    public static final String ROOT = System.getProperty("user.dir") + "/";
     public final static String USER_HOME = System.getProperty("user.home");
     public static final char PATH_SEPARATOR_CHAR = '/';
     public static final Long TEXT_MAX_FILE_SIZE_MB = 1L;
@@ -36,6 +37,7 @@ public class HouseConstant {
 
     public static String HOUSE = USER_HOME;
 
+
     @Autowired(required = false)
     public void setJsonFile(@Value("${nefurehouse.json.systemConfig}") String jsonFile){
         JSON_FILE = jsonFile;
@@ -43,12 +45,12 @@ public class HouseConstant {
 
     @Autowired(required = false)
     public void setHouse(@Value("${nefurehouse.house}") String house){
-        HOUSE = house;
+        HOUSE = ROOT + house;
     }
 
     @Autowired(required = false)
     public void setTmpFilePath(@Value("${nefurehouse.tmp.path}") String tmpFilePath) {
-        TMP_FILE_PATH = tmpFilePath;
+        TMP_FILE_PATH = ROOT + tmpFilePath;
     }
 
 
@@ -79,6 +81,6 @@ public class HouseConstant {
 
     @Autowired
     public void setLog(@Value("${nefurehouse.log.path}") String log){
-        LOG = log;
+        LOG = ROOT + log;
     }
 }

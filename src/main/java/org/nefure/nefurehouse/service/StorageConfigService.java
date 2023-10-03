@@ -25,7 +25,7 @@ public class StorageConfigService {
     @Resource
     private StorageConfigMapper storageConfigMapper;
 
-    public Map<String, StorageConfig> getStringStorageConfigMap(Integer driveId) {
+    public Map<String, StorageConfig> getStringStorageConfigMap(Long driveId) {
         Map<String,StorageConfig> stringStorageConfigMap = new HashMap<>();
         for (StorageConfig storageConfig : findStorageConfigByDriveId(driveId)){
             stringStorageConfigMap.put(storageConfig.getKey(),storageConfig);
@@ -33,16 +33,16 @@ public class StorageConfigService {
         return stringStorageConfigMap;
     }
 
-    public List<StorageConfig> findStorageConfigByDriveId(Integer driveId){
+    public List<StorageConfig> findStorageConfigByDriveId(Long driveId){
         return storageConfigMapper.findByDriveId(driveId);
     }
 
-    public StorageStrategyConfig getStorageStrategyConfigByDriveId(Integer driveId){
+    public StorageStrategyConfig getStorageStrategyConfigByDriveId(Long driveId){
         List<StorageConfig> storageConfigs = findStorageConfigByDriveId(driveId);
         return toStorageStrategyConfig(storageConfigs);
     }
 
-    public void deleteByDriveId(Integer driveId) {
+    public void deleteByDriveId(Long driveId) {
         storageConfigMapper.deleteByDriveId(driveId);
     }
 

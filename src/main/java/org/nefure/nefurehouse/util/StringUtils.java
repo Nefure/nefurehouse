@@ -74,7 +74,7 @@ public class StringUtils {
      * @param fullPath      文件全路径
      * @return              生成结果
      */
-    public static String generatorLink(Integer driveId, String fullPath) {
+    public static String generatorLink(Long driveId, String fullPath) {
         SystemConfigService systemConfigService = SpringContextHolder.getBean(SystemConfigService.class);
         String domain = systemConfigService.getDomain();
         return concatUrl(domain, HouseConstant.DIRECT_LINK_PREFIX, String.valueOf(driveId), fullPath);
@@ -96,7 +96,7 @@ public class StringUtils {
      */
     public static String removeFirstSeparators(String path) {
         StringBuilder sb = new StringBuilder();
-        if(null != path&&!"".equals(path)){
+        if(null != path&& !path.isEmpty()){
             int i = 0;
             while (i < path.length() && path.charAt(i)=='/'){
                 i++;

@@ -23,9 +23,9 @@ public class LoginController {
     private SystemConfigService systemConfigService;
 
     @PostMapping("/doLogin")
-    public ResultData login(String userName, String passWord){
+    public ResultData login(String username, String password){
         SystemConfigDTO systemConfig = systemConfigService.getSystemConfig();
-        if(Objects.equals(userName,systemConfig.getUsername()) && Objects.equals(SecureUtil.md5(passWord),systemConfig.getPassword())){
+        if(Objects.equals(username,systemConfig.getUsername()) && Objects.equals(SecureUtil.md5(password),systemConfig.getPassword())){
             StpUtil.login("admin");
             return ResultData.successData("登录成功");
         }

@@ -2,14 +2,14 @@ nefurehouse:
   debug: false
   directLinkPrefix: directlink
   log:
-    path: e:/.nefurehouse/logs
+    path: .nefurehouse/logs
   tmp:
-    path: e:/.nefurehouse/tmp
-  house: e:/.nefurehouse
+    path: .nefurehouse/tmp
+  house: .nefurehouse
   cache:
     auto-refresh:
       interval: 1
-    timeout: 1800
+    timeout: 60
   constant:
     readme: readme.md
     password: password.txt
@@ -22,7 +22,7 @@ nefurehouse:
     systemConfig: json/systemConfig.json
 
 server:
-  port: 8080
+  port: 8081
   servlet:
     context-path: ''
   tomcat:
@@ -37,7 +37,7 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/house?characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowMultiQueries=true
     username: nefure
-    password: misaki
+    password: 123456
 
   jackson:
     date-format: yyyy-MM-dd HH:mm

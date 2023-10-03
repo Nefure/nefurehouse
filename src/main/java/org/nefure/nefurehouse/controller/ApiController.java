@@ -27,6 +27,7 @@ import java.util.List;
  */
 @RequestMapping("/api")
 @RestController
+@CrossOrigin
 public class ApiController {
 
     @Value("${nefurehouse.debug}")
@@ -64,7 +65,7 @@ public class ApiController {
      * @return 目录信息
      */
     @GetMapping("/list/{driveId}")
-    public ResultData getDriveListById(@PathVariable Integer driveId,
+    public ResultData getDriveListById(@PathVariable Long driveId,
                                        @RequestParam(required = false) String password,
                                        @RequestParam(required = false,defaultValue = "/") String path,
                                        @RequestParam(required = false,defaultValue = "asc") String orderDirection,

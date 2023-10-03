@@ -32,7 +32,7 @@ public class FilterConfigService {
      *          文件名
      * @return  是否显示
      */
-    public boolean filterResultIsHidden(Integer driveId, String fileName) {
+    public boolean filterResultIsHidden(Long driveId, String fileName) {
         List<FilterConfig> filterConfigList = filterConfigMapper.findByDriveId(driveId);
 
         for (FilterConfig filterConfig : filterConfigList) {
@@ -47,7 +47,7 @@ public class FilterConfigService {
                 if (match) {
                     return true;
                 }
-                log.debug("regex: {}, name {}, contains: {}", expression, fileName, match);
+                log.debug("regex: {}, name {}, contains: false", expression, fileName);
             } catch (Exception e) {
                 log.debug("regex: {}, name {}, parse error, skip expression", expression, fileName);
             }
@@ -56,7 +56,7 @@ public class FilterConfigService {
         return false;
     }
 
-    public List<FilterConfig> getFiltersByDriveId(Integer driveId) {
+    public List<FilterConfig> getFiltersByDriveId(Long driveId) {
         return filterConfigMapper.findByDriveId(driveId);
     }
 

@@ -68,7 +68,7 @@ public class SystemConfigService {
         SystemConfigDTO systemConfigDTO = null;
         List<SystemConfig> systemConfigList = systemConfigMapper.findAll();
 
-        if(systemConfigList != null && systemConfigList.size() > 0) {
+        if(systemConfigList != null && !systemConfigList.isEmpty()) {
             systemConfigDTO = new SystemConfigDTO();
             for (SystemConfig systemConfig : systemConfigList) {
                 String key = systemConfig.getKey();
@@ -94,7 +94,7 @@ public class SystemConfigService {
             File json = new ClassPathResource(HouseConstant.JSON_FILE).getFile();
             systemConfigDTO = objectMapper.readValue(json, SystemConfigDTO.class);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
             throw new RuntimeException("读取默认配置失败！");
         }
         return systemConfigDTO;
@@ -140,7 +140,7 @@ public class SystemConfigService {
         //排除空对象
         List<SystemConfig> nonNullList = systemConfigs.stream().filter(Objects::nonNull).collect(Collectors.toList());
         List<Integer> hasId = nonNullList.stream().map(SystemConfig::getId).filter(Objects::nonNull).collect(Collectors.toList());
-        if(hasId.size() > 0){
+        if(!hasId.isEmpty()){
             //提取出更新的项并更新
             Set<Integer> contains = systemConfigMapper.findByIds(hasId);
             List<SystemConfig> updates = nonNullList.stream().filter(systemConfig -> systemConfig.getId() != null && contains.contains(systemConfig.getId())).collect(Collectors.toList());
@@ -160,7 +160,7 @@ public class SystemConfigService {
      * @param ls 插入的记录
      */
     public void insertAll(List<SystemConfig> ls){
-        if(ls != null && ls.size() > 0){
+        if(ls != null && !ls.isEmpty()){
             systemConfigMapper.saveAll(ls);
         }
     }
@@ -169,7 +169,7 @@ public class SystemConfigService {
      * 通过id批量修改
      */
     public void updateAll(List<SystemConfig> ls){
-        if(ls != null && ls.size() > 0){
+        if(ls != null && !ls.isEmpty()){
             systemConfigMapper.updateAll(ls);
         }
     }
