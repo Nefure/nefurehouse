@@ -4,13 +4,12 @@ import org.apache.catalina.connector.ClientAbortException;
 import org.nefure.nefurehouse.model.support.ResultData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
-import javax.annotation.Resource;
 
 /**
  * @author nefure
@@ -35,6 +34,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({InvalidDriveException.class, NotEnabledDriveException.class, PasswordVerifyException.class, PreviewException.class, TextParseException.class, InitializeDriveException.class, NotExistFileException.class})
     public ResultData invalidDriveException(Exception e) {
         return ResultData.error(e.getMessage());
+    }
+
+    @ResponseBody
+    @ResponseStatus(code = HttpStatus.METHOD_NOT_ALLOWED)
+    @ExceptionHandler({org.springframework.web.HttpRequestMethodNotSupportedException.class})
+    public ResultData notFound(Exception e){
+        return ResultData.error("请求错误");
     }
 
     @ExceptionHandler

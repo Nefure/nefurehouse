@@ -149,7 +149,6 @@ public class DriverConfigService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void updateDriveOrderNumbers(List<DriverConfig> driverConfigList) {
-        long[] orders = driverConfigList.stream().mapToLong(DriverConfig::getOrderNum).toArray();
         for (DriverConfig driverConfig : driverConfigList){
             driverConfigDao.updateDriveOrderNumber(driverConfig.getId(),driverConfig.getOrderNum());
         }

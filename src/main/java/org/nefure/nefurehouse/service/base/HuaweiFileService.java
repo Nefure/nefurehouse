@@ -17,6 +17,7 @@ public class HuaweiFileService extends S3FileService{
         return StorageType.HUAWEI;
     }
 
+
     @Override
     public String getRegion() {
         return "obs";

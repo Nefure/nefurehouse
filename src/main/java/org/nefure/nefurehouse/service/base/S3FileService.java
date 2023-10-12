@@ -21,8 +21,11 @@ import org.nefure.nefurehouse.service.StorageConfigService;
 import org.nefure.nefurehouse.util.StringUtils;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.net.URL;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * @author nefure
@@ -187,5 +190,13 @@ public abstract class S3FileService extends AbstractBaseFileService {
             add(new StorageConfig("basePath", "基路径"));
             add(new StorageConfig("isPrivate", "是否是私有空间"));
         }};
+    }
+
+    /**
+     * 远程对象存储直接从其链接读取即可，无需通过此后端系统，也可实现本方法，避免被刷流量
+     */
+    @Override
+    public CompletableFuture<Void> download(HttpServletRequest request, HttpServletResponse response, String type, String filePath) {
+        return null;
     }
 }

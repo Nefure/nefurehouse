@@ -18,11 +18,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 /**
@@ -216,4 +221,28 @@ public abstract class AbstractBaseFileService implements BaseFileService {
         }
         return null;
     }
+
+    /**
+     * 小文件上传
+     *
+     * @param path 上传位置
+     * @param file 文件内容
+     */
+    public CompletableFuture<Boolean> uploadSimple(String path, MultipartFile file) {
+        return CompletableFuture.completedFuture(false);
+    }
+
+    /**
+     * @throws IOException 上传失败
+     */
+    public CompletableFuture<Boolean> uploadParts(MultipartFile file, String hash, int idx, int chunkCnt, long size) throws IOException {
+        return CompletableFuture.completedFuture(false);
+    }
+
+
+    public CompletableFuture<Boolean> commitParts(String path, String hash, String name) {
+        throw new RuntimeException("not support");
+    }
+
+    public abstract CompletableFuture<Void> download(HttpServletRequest request, HttpServletResponse response, String type, String filePath);
 }

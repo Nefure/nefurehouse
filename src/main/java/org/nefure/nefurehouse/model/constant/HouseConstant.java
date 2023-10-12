@@ -15,9 +15,15 @@ public class HouseConstant {
     public final static String USER_HOME = System.getProperty("user.home");
     public static final char PATH_SEPARATOR_CHAR = '/';
     public static final Long TEXT_MAX_FILE_SIZE_MB = 1L;
-    private static Long AUDIO_MAX_FILE_SIZE_MB = 1L;
+    public static Long AUDIO_MAX_FILE_SIZE_MB = 1L;
     public static String TMP_FILE_PATH = "/.house/tmp2/";
     public static String JSON_FILE;
+
+    public static String REPO_FOLDER;
+
+    public static int PIECE_SIZE_MB;
+
+    public static final int M = 1024*1024;
     /**
      * 直链前缀名称
      */
@@ -37,6 +43,10 @@ public class HouseConstant {
 
     public static String HOUSE = USER_HOME;
 
+    /**
+     * 是否自动删除上传产生的临时文件
+     */
+    public static boolean deleteFilesWhenClean;
 
     @Autowired(required = false)
     public void setJsonFile(@Value("${nefurehouse.json.systemConfig}") String jsonFile){
@@ -82,5 +92,22 @@ public class HouseConstant {
     @Autowired
     public void setLog(@Value("${nefurehouse.log.path}") String log){
         LOG = ROOT + log;
+    }
+
+
+    @Autowired
+    public void setRepoFolder(@Value("${nefurehouse.repoFolder}") String path){
+        REPO_FOLDER = path;
+    }
+
+
+    @Autowired
+    public void setPieceSizeMb(@Value("${nefurehouse.tmp.pieceSizeMb}") int size){
+        PIECE_SIZE_MB = size;
+    }
+
+    @Autowired
+    public void setDeleteFilesWhenClean(@Value("${nefurehouse.tmp.autoDelete}") boolean auto){
+        deleteFilesWhenClean = auto;
     }
 }

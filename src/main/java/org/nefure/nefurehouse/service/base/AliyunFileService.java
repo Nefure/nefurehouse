@@ -17,6 +17,7 @@ public class AliyunFileService extends S3FileService{
         return StorageType.ALIYUN;
     }
 
+
     @Override
     public String getRegion() {
         return "oss";

@@ -56,7 +56,7 @@ public class DirectLinkController {
         //获取除开匹配部分的其余部分（这里是’**‘部分），即请求的文件路径
         String filePath = new AntPathMatcher().extractPathWithinPattern(bestMatchPattern, path);
 
-        if (filePath.length() > 0 && filePath.charAt(0) != HouseConstant.PATH_SEPARATOR_CHAR) {
+        if (!filePath.isEmpty() && filePath.charAt(0) != HouseConstant.PATH_SEPARATOR_CHAR) {
             filePath = "/" + filePath;
         }
 
@@ -83,7 +83,6 @@ public class DirectLinkController {
         } else {
             url = URLUtil.encode(url);
         }
-
 
         if (Objects.equals(fileItem.getType(), FileTypeEnum.FOLDER)) {
             return "redirect:" + fileItem.getUrl();

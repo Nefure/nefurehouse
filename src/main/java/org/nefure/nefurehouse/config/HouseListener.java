@@ -2,6 +2,7 @@ package org.nefure.nefurehouse.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.nefure.nefurehouse.model.constant.HouseConstant;
+import org.nefure.nefurehouse.util.FileCabinet;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
@@ -19,6 +20,9 @@ public class HouseListener implements ApplicationListener<ApplicationStartedEven
     @Override
     public void onApplicationEvent(ApplicationStartedEvent applicationStartedEvent) {
         try{
+            FileCabinet.deleteFilesWhenClean = HouseConstant.deleteFilesWhenClean;
+            FileCabinet.path = HouseConstant.REPO_FOLDER;
+            FileCabinet.PIECE_SIZE_MB = HouseConstant.PIECE_SIZE_MB;
             boolean success = new File(HouseConstant.LOG).mkdirs();
             success = new File(HouseConstant.TMP_FILE_PATH).mkdirs();
         }catch (Exception e){

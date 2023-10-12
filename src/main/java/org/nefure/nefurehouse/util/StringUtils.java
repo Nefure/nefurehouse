@@ -124,4 +124,13 @@ public class StringUtils {
 
         return domain + path;
     }
+
+
+    public static String fillLeft(int num,char filler, int length){
+        StringBuilder builder = new StringBuilder(Integer.toString(num)).reverse();
+        while (builder.length() < length){
+            builder.append(filler);
+        }
+        return builder.reverse().toString();
+    }
 }

@@ -1,13 +1,17 @@
 package org.nefure.nefurehouse.util;
 
 import cn.hutool.core.io.FileUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.nefure.nefurehouse.exception.PreviewException;
 import org.nefure.nefurehouse.exception.TextParseException;
 import org.nefure.nefurehouse.model.constant.HouseConstant;
+import org.nefure.nefurehouse.model.support.ResultData;
 import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -54,10 +58,19 @@ public class HttpUtil {
             URLConnection conn = urlObject.openConnection();
             size = conn.getContentLength();
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
 
         return size;
     }
 
+    public static void sendResultData(final HttpServletResponse response, ResultData rs) throws IOException {
+        response.setCharacterEncoding("utf-8");
+        response.setContentType("application/json;charset=utf-8");
+        PrintWriter writer = response.getWriter();
+        ObjectMapper mapper = new ObjectMapper();
+        writer.write(mapper.writeValueAsString(rs));
+        writer.flush();
+        writer.close();
+    }
 }

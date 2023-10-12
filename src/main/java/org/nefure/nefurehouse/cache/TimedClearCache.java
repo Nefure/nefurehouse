@@ -12,6 +12,9 @@ import java.util.Map;
  * @date 2022/3/30 18:14
  */
 public class TimedClearCache<K,V> extends TimedCache<K,V> {
+
+    private static final long serialVersionUID = -1877232067299844508L;
+
     public TimedClearCache(long timeout) {
         super(timeout);
     }
@@ -19,4 +22,5 @@ public class TimedClearCache<K,V> extends TimedCache<K,V> {
     public TimedClearCache(long timeout, Map<K, CacheObj<K, V>> map) {
         super(timeout, map);
     }
+
 }

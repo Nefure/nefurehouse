@@ -1,10 +1,13 @@
 nefurehouse:
   debug: false
   directLinkPrefix: directlink
+  repoFolder: E:\Temp\house_link
   log:
     path: .nefurehouse/logs
   tmp:
     path: .nefurehouse/tmp
+    pieceSizeMb: 1
+    autoDelete: true
   house: .nefurehouse
   cache:
     auto-refresh:
@@ -20,9 +23,18 @@ nefurehouse:
       maxFileSizeKb: 512
   json:
     systemConfig: json/systemConfig.json
-
+  downloadThreadPool:
+    maxPoolSize: 8
+    corePoolSize: 8
+    queueCapacity: 12
+    aliveSeconds: 60
+  uploadThreadPool:
+    maxPoolSize: 8
+    corePoolSize: 8
+    queueCapacity: 12
+    aliveSeconds: 60
 server:
-  port: 8081
+  port: 8080
   servlet:
     context-path: ''
   tomcat:

@@ -13,10 +13,12 @@ import org.springframework.http.ResponseEntity;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.io.*;
+import java.math.BigInteger;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
 
 /**
@@ -151,5 +153,41 @@ public class FileUtil {
                 .contentLength(file.length())
                 .contentType(octetStream)
                 .body(new FileSystemResource(file));
+    }
+
+    public static String getMd5(String path) throws IOException {
+        try (RandomAccessFile file = new RandomAccessFile(path, "r")){
+            MessageDigest md5Digest = MessageDigest.getInstance("MD5");
+            FileChannel channel = file.getChannel();
+            final int piece = 2097152;
+            long size = channel.size();
+            int len = (int) ((size + piece -1)/piece);
+            for (int i = 0; i < len ; i++){
+                ByteBuffer buffer = ByteBuffer.allocate(piece);
+                int read = channel.read(buffer);
+                byte[] array = buffer.array();
+                md5Digest.update(array,0,read);
+            }
+            byte[] digest = md5Digest.digest();
+            BigInteger big = new BigInteger(1, digest);
+            return big.toString(16);
+        } catch (NoSuchAlgorithmException ignored) {}
+        //never
+        return null;
+    }
+
+    public static void copyTo(File src,File target){
+        try (RandomAccessFile file = new RandomAccessFile(src,"r"); RandomAccessFile to = new RandomAccessFile(target,"rw")){
+            FileChannel channel = file.getChannel();
+            FileChannel dest = to.getChannel();
+            long size = channel.size();
+            int piece = 1024*1024*2;
+            int len = (int) ((size + piece -1)/piece);
+            for (int i = 0; i < len; i++){
+                channel.transferTo(i *(long) piece,piece,dest);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
